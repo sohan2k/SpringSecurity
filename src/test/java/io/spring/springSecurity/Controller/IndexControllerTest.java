@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
@@ -30,11 +31,18 @@ class IndexControllerTest {
                 .apply(springSecurity())
                 .build();
     }
-
+    //wee tell spring that we have a user and it just satisfy and return result
     @WithMockUser("user1")
     @Test
     void getUser() throws Exception {
         mockMvc.perform(get("/user"))
+                .andExpect(status().isOk());
+
+    }
+    //httpbasic check the username and password and return )
+    @Test
+    void getUserWithHttpBasic() throws Exception {
+        mockMvc.perform(get("/user").with(httpBasic("user1","1234")))
                 .andExpect(status().isOk());
 
     }
