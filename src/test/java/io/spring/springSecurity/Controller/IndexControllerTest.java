@@ -42,10 +42,29 @@ class IndexControllerTest {
     //httpbasic check the username and password and return )
     @Test
     void getUserWithHttpBasic() throws Exception {
-        mockMvc.perform(get("/user").with(httpBasic("user1","1234")))
+        mockMvc.perform(get("/user").with(httpBasic("user1","123")))
                 .andExpect(status().isOk());
 
     }
 
+    @Test
+    void testdelegatingPassEncoderWithLdap() throws Exception {
+        mockMvc.perform(get("/user").with(httpBasic("user1","123")))
+                .andExpect(status().isOk());
 
+    }
+
+    @Test
+    void testdelegatingPassEncoderWithSha256() throws Exception {
+        mockMvc.perform(get("/user").with(httpBasic("admin","123")))
+                .andExpect(status().isOk());
+
+    }
+
+    @Test
+    void testdelegatingPassEncoderWithBcrypt() throws Exception {
+        mockMvc.perform(get("/user").with(httpBasic("sohan","123")))
+                .andExpect(status().isOk());
+
+    }
 }

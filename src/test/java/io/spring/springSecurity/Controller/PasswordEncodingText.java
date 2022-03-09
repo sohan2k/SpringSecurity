@@ -3,10 +3,8 @@ package io.spring.springSecurity.Controller;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.*;
 import org.springframework.util.DigestUtils;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -38,7 +36,11 @@ public class PasswordEncodingText {
 
     @Test
     void testBycrptPasswordEncoder() {
-        PasswordEncoder byCrpt=new BCryptPasswordEncoder();
+
+        //PasswordEncoder byCrpt=new BCryptPasswordEncoder();//here we change the strength og this encoder.
+
+        PasswordEncoder byCrpt=new BCryptPasswordEncoder(12);//its default strength is 10
+
         System.out.println(byCrpt.encode(PASSWORD));
         System.out.println(byCrpt.encode(PASSWORD));
         //so it always provide new hashcode
@@ -59,10 +61,22 @@ public class PasswordEncodingText {
 
     @Test
     void testStandardShaPasswordEncoder() {
-        PasswordEncoder stdSha=new StandardPasswordEncoder();
+        PasswordEncoder stdSha=new StandardPasswordEncoder();// it use 256 hashing
 
         System.out.println(stdSha.encode(PASSWORD));
         System.out.println(stdSha.encode(PASSWORD));
+
+    }
+
+    @Test
+    void testdelegatingPasswordEncoder() {
+        PasswordEncoder ldap=new LdapShaPasswordEncoder();
+        PasswordEncoder stdSha256=new StandardPasswordEncoder();
+        PasswordEncoder byCrpt=new BCryptPasswordEncoder();
+
+        System.out.println(ldap.encode("123"));
+        System.out.println(stdSha256.encode("123"));
+        System.out.println(byCrpt.encode("123"));
 
     }
 }

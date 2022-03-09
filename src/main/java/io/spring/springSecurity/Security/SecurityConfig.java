@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,17 +18,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("user1")
-                .password(passwordEncoder().encode("1234"))
-                .roles("USER")
-                .and()
-                .withUser("admin")
-                .password(passwordEncoder().encode("123"))
-                .roles("ADMIN");
-    }
+
 /* There is no PasswordEncoder mapped for the id "null"
  THIS error is occur because this password is not encoded so it doesnt match
  so we use {noop} OR create a class password encoder
@@ -47,7 +38,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return new StandardPasswordEncoder();
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser("user1")
+                .password("{ldap}{SSHA}sMmSuJ/Fh31mrdeF7geOlQFHNCKCoP9sPHecTA==")
+                .roles("USER")
+                .and()
+                .withUser("admin")
+                .password("{sha256}221eb667e9c018dcf63e4807934dca855a373e3210f110906da56259ec9305f194a62df30ddd9504")
+                .roles("ADMIN");
+
+        auth.inMemoryAuthentication()
+                .withUser("sohan")
+                .password("{bcrypt}$2a$10$WUrU0hW0Lw7W/r/GdFcejeLjpXWDgtrxaFBjwZi8IMAosbE8ACenW")
+                .roles("CUSTOMER");
+
+        /*here we get all hash code by print it in passwordencoderTest class
+        then i pass the hash value with their encoder .
+        and run test in indexController
+         */
+    }
+
 
 }
