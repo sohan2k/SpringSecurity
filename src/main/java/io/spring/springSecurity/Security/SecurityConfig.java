@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -19,11 +20,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("user1")
-                .password("1234")
+                .password(passwordEncoder().encode("1234"))
                 .roles("USER")
                 .and()
                 .withUser("admin")
-                .password("123")
+                .password(passwordEncoder().encode("123"))
                 .roles("ADMIN");
     }
 /* There is no PasswordEncoder mapped for the id "null"
@@ -58,8 +59,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .build();
 //        return new InMemoryUserDetailsManager(user,admin);
 //    }
+
+    //TODO: NoOpPasswordEncoder
+//    @Bean
+//    public PasswordEncoder passwordEncoder(){
+//        return NoOpPasswordEncoder.getInstance();
+//    }
+
+    //TODO: NoOpPasswordEncoder
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return NoOpPasswordEncoder.getInstance();
+        return new LdapShaPasswordEncoder();
     }
+
 }
