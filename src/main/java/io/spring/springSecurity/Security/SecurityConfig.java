@@ -19,11 +19,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("user1")
-                .password("{noop}1234")
+                .password("1234")
                 .roles("USER")
                 .and()
                 .withUser("admin")
-                .password("{noop}123")
+                .password("123")
                 .roles("ADMIN");
     }
 /* There is no PasswordEncoder mapped for the id "null"
@@ -58,8 +58,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .build();
 //        return new InMemoryUserDetailsManager(user,admin);
 //    }
-//    @Bean
-//    public PasswordEncoder passwordEncoder(){
-//        return NoOpPasswordEncoder.getInstance();
-//    }
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return NoOpPasswordEncoder.getInstance();
+    }
 }

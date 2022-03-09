@@ -1,6 +1,9 @@
 package io.spring.springSecurity.Controller;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.DigestUtils;
 
 public class PasswordEncodingText {
@@ -18,4 +21,20 @@ public class PasswordEncodingText {
          */
 
     }
+
+    @Test
+    void testNoOpPasswordEncoder() {
+        PasswordEncoder noOp= NoOpPasswordEncoder.getInstance();
+        System.out.println(noOp.encode(PASSWORD));
+    }
+
+    @Test
+    void testBycrptPasswordEncoder() {
+        PasswordEncoder byCrpt=new BCryptPasswordEncoder();
+        System.out.println(byCrpt.encode(PASSWORD));
+        System.out.println(byCrpt.encode(PASSWORD));
+        //so it always provide new hashcode
+    }
+
+
 }
