@@ -6,6 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.util.DigestUtils;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -53,6 +54,15 @@ public class PasswordEncodingText {
         assertTrue(ldap.matches(PASSWORD,encoded));
 
 
+
+    }
+
+    @Test
+    void testStandardShaPasswordEncoder() {
+        PasswordEncoder stdSha=new StandardPasswordEncoder();
+
+        System.out.println(stdSha.encode(PASSWORD));
+        System.out.println(stdSha.encode(PASSWORD));
 
     }
 }

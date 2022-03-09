@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @EnableWebSecurity
@@ -43,33 +44,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic();
     }
 
-//    @Bean
-//    @Override
-//    protected UserDetailsService userDetailsService() {
-//        UserDetails user= User.withDefaultPasswordEncoder()
-//                .username("user")
-//                .password("12345")
-//                .roles("USER")
-//                .build();
-//
-//        UserDetails admin= User.withDefaultPasswordEncoder()
-//                .username("admin")
-//                .password("123")
-//                .roles("ADMIN")
-//                .build();
-//        return new InMemoryUserDetailsManager(user,admin);
-//    }
 
-    //TODO: NoOpPasswordEncoder
-//    @Bean
-//    public PasswordEncoder passwordEncoder(){
-//        return NoOpPasswordEncoder.getInstance();
-//    }
-
-    //TODO: NoOpPasswordEncoder
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return new LdapShaPasswordEncoder();
+        return new StandardPasswordEncoder();
     }
 
 }
