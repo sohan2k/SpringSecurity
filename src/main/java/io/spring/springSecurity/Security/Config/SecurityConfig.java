@@ -39,8 +39,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable();
         http
                 .authorizeRequests(authorize->{
-            authorize.antMatchers("/","/api/**","/h2-console").permitAll()
+            authorize
+                    .antMatchers("/h2-console/**").permitAll()
+                    .antMatchers("/","/api/**").permitAll()
                     .antMatchers(HttpMethod.GET ,"/api/user/**").permitAll()
+                    .antMatchers(HttpMethod.POST,"/api/user").permitAll()
                     .mvcMatchers(HttpMethod.GET,"/api/user/{id}").permitAll();
                 })
                 .authorizeRequests()
@@ -48,6 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin().and()
                 .httpBasic();
+        //H2 -console config
+        http.headers().frameOptions().sameOrigin();
     }
 
 
