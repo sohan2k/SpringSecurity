@@ -25,6 +25,9 @@ public class PasswordEncodingText {
         /*here i adda asalted value with my password and it provide a different hashcode
         so if attacker know my password they dont know the salted value.so it is now more secure than previous
          */
+        String s="guru-spring";
+        System.out.println(DigestUtils.md5DigestAsHex(s.getBytes()));
+
 
     }
 
@@ -44,6 +47,7 @@ public class PasswordEncodingText {
         System.out.println(byCrpt.encode(PASSWORD));
         System.out.println(byCrpt.encode(PASSWORD));
         //so it always provide new hashcode
+
     }
 
     @Test
